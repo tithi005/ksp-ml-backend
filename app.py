@@ -34,8 +34,11 @@ def predict():
         
         df = pd.DataFrame([req_data])
         
-        expected_features = ['incident_number', 'days_since_last_incident', 'GravityOffenceID', 
-                             'max_gravity_so_far', 'prior_arrest_made', 'accused_has_other_victims']
+        # Load expected features dynamically
+        features_path = os.path.join(os.path.dirname(__file__), 'escalation_features.pkl')
+        with open(features_path, 'rb') as f:
+            expected_features = pickle.load(f)
+            
         df = df[expected_features]
         
         prediction = model.predict(df)[0]
